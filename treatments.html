@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AyurVeda Panchakarma | Traditional Healing & Wellness Sanctuary - Treatments</title>
+    <link rel="icon" type="image/jpeg" href="img/ayurveda (2).jpg">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Inter"', 'sans-serif'],
+                        heading: ['"Inter"', 'sans-serif'],
+                    },
+                    fontWeight: {
+                        light: '300',
+                        regular: '400',
+                        medium: '500',
+                        semibold: '600',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* === RESET & CORE === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            transition: background-color 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
+            font-weight: 300;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .brand-logo {
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            font-weight: 400;
+        }
+
+        /* === THEME VARIABLES (Ayurvedic Palette: Emerald & Gold) === */
+        :root {
+            --bg-color: #F4FBF7;
+            --bg-secondary: #E8F7EE;
+            --bg-card: #FFFFFF;
+            --bg-inverted: #062414;
+            --text-main: #062414;
+            --text-muted: #4A6B5D;
+            --accent-color: #059669;
+            /* Ayurvedic Emerald */
+            --accent-dark: #047857;
+            --border-color: #D1E7DF;
+            --nav-bg: #F4FBF7;
+            --drawer-bg: rgba(244, 251, 247, 0.98);
+            --menu-hover-bg: rgba(5, 150, 105, 0.08);
+        }
+
+        /* DARK MODE */
+        body.dark-mode {
+            --bg-color: #062414;
+            --bg-secondary: #0D3B22;
+            --bg-card: #0A2E1A;
+            --bg-inverted: #03140A;
+            --text-main: #ECFDF5;
+            --text-muted: #9CA3AF;
+            --accent-color: #34D399;
+            --accent-dark: #10B981;
+            --border-color: #134E31;
+            --nav-bg: #062414;
+            --drawer-bg: rgba(6, 36, 20, 0.98);
+            --menu-hover-bg: rgba(52, 211, 153, 0.1);
+        }
+
+        /* RTL SUPPORT */
+        [dir="rtl"] {
+            text-align: right;
+        }
+
+        [dir="rtl"] .ml-auto {
+            margin-right: auto;
+            margin-left: 0;
+        }
+
+        [dir="rtl"] .mr-auto {
+            margin-left: auto;
+            margin-right: 0;
+        }
+
+        @keyframes subtleZoom {
+            0% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(1.08);
+            }
+        }
+
+        .animate-zoom {
+            animation: subtleZoom 25s infinite alternate ease-in-out;
+        }
+
+        /* === NAVBAR DESIGN === */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: var(--nav-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 32px;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            transition: all 0.5s ease;
+        }
+
+        .navbar.scrolled {
+            height: 75px;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+            background: var(--drawer-bg);
+            backdrop-filter: blur(10px);
+        }
+
+        body.dark-mode .navbar.scrolled {
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8);
+        }
+
+        .nav-link {
+            position: relative;
+            padding: 10px 16px;
+            margin: 0 2px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: var(--accent-color);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--accent-color);
+        }
+
+        .dropdown {
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 70px;
+            left: 0;
+            transform: translateY(15px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 100;
+        }
+
+        .navbar.scrolled .dropdown-menu {
+            top: 60px;
+        }
+
+        .dropdown-inner {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-top: 3px solid var(--accent-color);
+            min-width: 220px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+            padding: 8px 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body.dark-mode .dropdown-inner {
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+        }
+
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 12px 24px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .dropdown-item:hover {
+            background: var(--menu-hover-bg);
+            color: var(--accent-color);
+            padding-left: 28px;
+        }
+
+        /* TOGGLES & BUTTONS */
+        .theme-toggle-pill {
+            width: 68px;
+            height: 40px;
+            background: var(--bg-secondary);
+            border-radius: 9999px;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px;
+            border: 1px solid var(--border-color);
+            box-sizing: border-box;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle-pill i {
+            font-size: 12px;
+            z-index: 1;
+            transition: color 0.3s ease;
+        }
+
+        .theme-toggle-pill .fa-sun {
+            color: #059669;
+        }
+
+        .theme-toggle-pill .fa-moon {
+            color: #4A6B5D;
+        }
+
+        .theme-toggle-pill .thumb {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 32px;
+            height: 32px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+            z-index: 2;
+            border: 1px solid var(--border-color);
+            box-sizing: border-box;
+        }
+
+        body.dark-mode .theme-toggle-pill .thumb {
+            transform: translateX(28px);
+            background: #134E31;
+            border-color: var(--border-color);
+        }
+
+        .rtl-btn-style {
+            min-width: 54px;
+            height: 40px;
+            padding: 0 16px;
+            background: var(--bg-secondary);
+            border-radius: 9999px;
+            border: 1px solid var(--border-color);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+            flex-shrink: 0;
+        }
+
+        .rtl-btn-style:hover {
+            background: var(--accent-color);
+            color: #fff;
+            border-color: var(--accent-color);
+        }
+
+        .navbar .btn,
+        .fullscreen-menu .btn {
+            height: 40px;
+            border-radius: 9999px;
+            padding: 0 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            font-weight: 500;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.4s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-radius: 2px;
+        }
+
+        .btn-solid {
+            background: var(--accent-color);
+            color: #FFFFFF !important;
+        }
+
+        .btn-solid:hover {
+            background: var(--accent-dark);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--border-color);
+            color: var(--text-main);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color) !important;
+        }
+
+        /* MOBILE MENU OVERLAY */
+        .drawer-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .fullscreen-menu {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            max-width: 420px;
+            height: 100dvh;
+            background: var(--drawer-bg);
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(100%);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            border-left: 1px solid var(--border-color);
+        }
+
+        [dir="rtl"] .fullscreen-menu {
+            right: auto;
+            left: 0;
+            transform: translateX(-100%);
+            border-left: none;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .fullscreen-menu.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+
+        .mobile-link {
+            display: block;
+            width: 100%;
+            padding: 16px 32px;
+            font-size: 1.1rem;
+            font-weight: 400;
+            text-transform: uppercase;
+            color: var(--text-main);
+            text-decoration: none;
+            transition: all 0.3s;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .mobile-link:hover {
+            color: var(--accent-color);
+            padding-left: 40px;
+            background: var(--menu-hover-bg);
+            border-left: 4px solid var(--accent-color);
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--bg-inverted);
+            border-top: 1px solid var(--border-color);
+            padding-top: 80px;
+            color: white;
+        }
+
+        footer h4 {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 24px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 400;
+        }
+
+        footer a,
+        footer li,
+        footer span {
+            color: #9CA3AF;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+            font-weight: 300;
+        }
+
+        footer a:hover {
+            color: var(--accent-color);
+        }
+
+        .social-link-circle {
+            width: 44px;
+            height: 44px;
+            border-radius: 2px;
+            border: 1px solid #134E31;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            color: white;
+            background: transparent;
+        }
+
+        .social-link-circle:hover {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+            color: #FFFFFF;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #134E31;
+            padding: 32px 0;
+            margin-top: 60px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR PART -->
+    <nav class="navbar" id="main-nav">
+        <div class="w-full flex items-center justify-between max-w-[1440px] mx-auto">
+            <div class="flex items-center">
+                <a href="index.html" class="text-2xl xl:text-3xl font-medium brand-logo tracking-wide block"
+                    style="color: var(--text-main) !important; text-decoration: none;">
+                    <i class="fas fa-leaf"
+                        style="color: var(--accent-color); margin-right: 0.3em; font-size: 0.85em; vertical-align: middle;"></i>AyurVeda
+                </a>
+            </div>
+
+            <div class="hidden xl:flex justify-center items-center flex-1">
+                <div class="dropdown">
+                    <div class="nav-link">Home <i class="fas fa-chevron-down text-[10px] ml-1"></i></div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-inner">
+                            <a href="index.html" class="dropdown-item">Home Page 1</a>
+                            <a href="home2.html" class="dropdown-item">Home Page 2</a>
+                        </div>
+                    </div>
+                </div>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="services.html" class="nav-link">Services</a>
+                <a href="treatments.html" class="nav-link active">Treatments</a>
+                <a href="packages.html" class="nav-link">Packages</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+                
+                <!-- Dashboard Dropdown Menu -->
+                <div class="dropdown">
+                    <div class="nav-link">Dashboard <i class="fas fa-chevron-down text-[10px] ml-1"></i></div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-inner">
+                            <a href="admin-dashboard.html" class="dropdown-item">Admin Dashboard</a>
+                            <a href="user - dashboard.html" class="dropdown-item">User Dashboard</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="hidden xl:flex items-center gap-5">
+                <div id="theme-toggle-desktop" class="theme-toggle-pill" title="Toggle Dark Mode">
+                    <i class="fas fa-sun"></i><i class="fas fa-moon"></i>
+                    <div class="thumb"></div>
+                </div>
+                <button id="rtl-btn" class="rtl-btn-style" title="Toggle LTR/RTL">LTR</button>
+                <div class="w-px h-6 bg-[var(--border-color)] mx-1"></div>
+                <a href="login.html" class="btn btn-solid">Login</a>
+            </div>
+
+            <div class="xl:hidden flex items-center justify-end gap-4">
+                <button id="mobile-btn"
+                    class="text-2xl text-[var(--text-main)] transition-colors hover:text-[var(--accent-color)]">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HAMBURGER MENU PART -->
+    <div class="drawer-overlay" id="drawer-overlay"></div>
+
+    <div class="fullscreen-menu" id="fullscreen-menu">
+        <div class="w-full px-8 py-8 flex justify-between items-center shrink-0 border-b border-[var(--border-color)]">
+            <a href="index.html" class="text-3xl font-medium brand-logo tracking-wide block"
+                style="color: var(--text-main) !important; text-decoration: none;">
+                <i class="fas fa-leaf"
+                    style="color: var(--accent-color); margin-right: 0.3em; font-size: 0.85em; vertical-align: middle;"></i>AyurVeda
+            </a>
+            <button id="close-menu"
+                class="w-10 h-10 flex items-center justify-center transition-all text-2xl text-[var(--text-main)] hover:text-[var(--accent-color)]">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="flex flex-col w-full overflow-y-auto flex-1 py-4">
+            <a href="index.html" class="mobile-link">Home Page 1</a>
+            <a href="home2.html" class="mobile-link">Home Page 2</a>
+            <a href="about.html" class="mobile-link">About</a>
+            <a href="services.html" class="mobile-link">Services</a>
+            <a href="treatments.html" class="mobile-link"
+                style="color: var(--accent-color); border-left: 4px solid var(--accent-color);">Treatments</a>
+            <a href="packages.html" class="mobile-link">Packages</a>
+            <a href="contact.html" class="mobile-link">Contact</a>
+            <a href="admin-dashboard.html" class="mobile-link">Admin Dashboard</a>
+            <a href="user - dashboard.html" class="mobile-link">User Dashboard</a>
+        </div>
+
+        <div
+            class="w-full px-8 py-8 border-t border-[var(--border-color)] flex flex-col gap-6 shrink-0 bg-[var(--bg-secondary)]">
+            <div class="flex justify-between items-center w-full">
+                <div class="flex items-center gap-3">
+                    <span
+                        class="text-[var(--text-muted)] font-normal text-[12px] uppercase tracking-widest font-heading">Theme</span>
+                    <div id="theme-toggle-mobile" class="theme-toggle-pill"><i class="fas fa-sun"></i><i
+                            class="fas fa-moon"></i>
+                        <div class="thumb"></div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span
+                        class="text-[var(--text-muted)] font-normal text-[12px] uppercase tracking-widest font-heading">Dir</span>
+                    <button id="rtl-toggle-mobile" class="rtl-btn-style">LTR</button>
+                </div>
+            </div>
+            <div class="flex gap-4 w-full">
+                <a href="login.html" class="btn btn-solid flex-1">Login</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- HERO BANNER PART (Customized for Treatments Page) -->
+    <section
+        class="relative w-full h-[100dvh] pt-20 flex items-center justify-center overflow-hidden border-b border-[var(--border-color)]">
+        <div class="absolute inset-0 z-0 bg-black">
+            <img src=" img/ayurveda (11).jpg" alt="Traditional Panchakarma Therapeutic Procedures"
+                class="w-full h-full object-cover animate-zoom opacity-55" />
+            <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/40"></div>
+        </div>
+
+        <div class="max-w-[1440px] mx-auto px-6 xl:px-12 w-full flex flex-col items-start justify-center relative z-10">
+            <div class="max-w-3xl">
+                <span
+                    class="text-[var(--accent-color)] text-sm font-medium uppercase tracking-[0.2em] mb-4 inline-block bg-black/60 backdrop-blur-sm px-4 py-2 border-l-4 border-[var(--accent-color)] shadow-md">
+                    <i class="fas fa-spa mr-2"></i> Specialized Therapeutic Procedures
+                </span>
+
+                <h1
+                    class="text-4xl md:text-6xl xl:text-7xl font-medium leading-[1.1] mb-6 text-white uppercase tracking-tight drop-shadow-2xl">
+                    Authentic Kerala <br class="hidden sm:block">
+                    <span class="text-[var(--accent-color)]">Panchakarma</span> Therapies.
+                </h1>
+
+                <p class="text-slate-200 text-lg md:text-xl leading-relaxed max-w-2xl font-normal mb-10 drop-shadow-xl">
+                    Immerse yourself in our classical five-fold purification and rejuvenation treatments (Vamana, Virechana, Basti, Nasya, and Raktamokshana) administered by expert Vaidyas.
+                </p>
+
+                <!-- Responsive Flex Container for Call to Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                    <a href="packages.html" class="btn btn-solid text-center shadow-lg hover:shadow-xl">
+                        <i class="fas fa-box-open mr-2"></i> View Healing Packages
+                    </a>
+                    <a href="contact.html"
+                        class="btn btn-outline !border-2 !border-white !text-white hover:!bg-white hover:!text-black text-center shadow-lg hover:shadow-xl bg-black/20 backdrop-blur-sm">
+                        <i class="far fa-calendar-check mr-2"></i> Book Treatment Plan
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- TREATMENTS SECTION 1: THE FIVE PURIFICATION PILLARS -->
+    <section class="py-24 bg-[var(--bg-color)] border-b border-[var(--border-color)]">
+        <div class="max-w-[1440px] mx-auto px-6 xl:px-12">
+            <div class="flex flex-col xl:flex-row gap-16 items-center">
+                <div class="w-full xl:w-1/2">
+                    <span class="text-[var(--accent-color)] text-sm font-medium tracking-[0.2em] mb-3 block uppercase font-heading">
+                        <i class="fas fa-spa mr-2"></i> Classical Cleansing
+                    </span>
+                    <h2 class="text-3xl xl:text-4xl font-medium mb-6 uppercase">The Fivefold Panchakarma Therapeutics</h2>
+                    <p class="text-[var(--text-muted)] mb-6 leading-relaxed font-light">
+                        Panchakarma is not merely a spa treatment; it is a profound clinical medical science designed to reset metabolic pathways, eradicate stubborn toxins (ama), and restore physiological balance from within.
+                    </p>
+                    <p class="text-[var(--text-muted)] mb-8 leading-relaxed font-light">
+                        Every patient undergoes a tailored sequence of preparatory oleation (Snehan) and sweating (Swedanam) prior to administering the main cleansing procedures.
+                    </p>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="border-l-2 border-[var(--accent-color)] pl-4">
+                            <h4 class="text-3xl font-heading text-[var(--text-main)] mb-1">5</h4>
+                            <p class="text-[var(--text-muted)] text-xs uppercase tracking-wider">Primary Actions</p>
+                        </div>
+                        <div class="border-l-2 border-[var(--accent-color)] pl-4">
+                            <h4 class="text-3xl font-heading text-[var(--text-main)] mb-1">100%</h4>
+                            <p class="text-[var(--text-muted)] text-xs uppercase tracking-wider">Natural Herbal Oils</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full xl:w-1/2 relative">
+                    <div class="absolute inset-0 bg-[var(--accent-color)] -translate-x-4 -translate-y-4 rounded-sm"></div>
+                    <img src="img/ayurveda (3).jpg" alt="Panchakarma Procedures" class="relative z-10 w-full h-[450px] object-cover rounded-sm shadow-xl" />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TREATMENTS SECTION 2: SHIRODHARA & STRESS RELIEF THERAPIES -->
+    <section class="py-24 bg-[var(--bg-secondary)] border-b border-[var(--border-color)]">
+        <div class="max-w-[1440px] mx-auto px-6 xl:px-12">
+            <div class="flex flex-col xl:flex-row gap-16 items-center">
+                <div class="w-full xl:w-1/2 relative">
+                    <img src="img/ayurveda (15).jpg" alt="Shirodhara Treatment Session" class="w-full h-[450px] object-cover rounded-sm shadow-xl" />
+                </div>
+                <div class="w-full xl:w-1/2">
+                    <span class="text-[var(--accent-color)] text-sm font-medium tracking-[0.2em] mb-3 block uppercase font-heading">
+                        <i class="fas fa-water mr-2"></i> Mental Harmony
+                    </span>
+                    <h2 class="text-3xl xl:text-4xl font-medium mb-6 uppercase">Shirodhara: The Flow of Deep Tranquility</h2>
+                    <p class="text-[var(--text-muted)] mb-6 leading-relaxed font-light">
+                        Shirodhara is a timeless Ayurvedic therapy where warm medicated herbal oil or herbal decoctions are rhythmically poured in a continuous stream over the third-eye chakra on the forehead.
+                    </p>
+                    <p class="text-[var(--text-muted)] mb-8 leading-relaxed font-light">
+                        This deeply soothing ritual synchronizes brain waves, calms the central nervous system, and provides profound relief from chronic headaches, sleep disorders, and severe anxiety.
+                    </p>
+                    <a href="contact.html" class="btn btn-solid">Book Shirodhara Session</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TREATMENTS SECTION 3: KATI BASTI & SPINE CARE -->
+    <section class="py-24 bg-[var(--bg-color)] border-b border-[var(--border-color)]">
+        <div class="max-w-[1440px] mx-auto px-6 xl:px-12">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-[var(--accent-color)] text-sm font-medium tracking-[0.2em] mb-3 block uppercase font-heading">
+                    <i class="fas fa-bone mr-2"></i> Targeted Relief
+                </span>
+                <h2 class="text-3xl xl:text-5xl font-medium uppercase mb-4">Spine & Joint Basti Therapies</h2>
+                <p class="text-[var(--text-muted)] font-light">Specialized localized retention therapies for back pain, cervical spondylosis, and joint degeneration.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-[var(--bg-card)] p-8 border border-[var(--border-color)] shadow-sm">
+                    <h3 class="text-xl font-medium uppercase mb-3 text-[var(--text-main)]">Kati Basti</h3>
+                    <p class="text-[var(--text-muted)] text-sm font-light leading-relaxed mb-6">Warm medicated herbal oil is retained over the lumbar spine using an herbal dough dam to nourish muscles and alleviate lower back pain.</p>
+                    <span class="text-xs uppercase tracking-widest text-[var(--accent-color)] font-semibold">45 Mins Session</span>
+                </div>
+                <div class="bg-[var(--bg-card)] p-8 border border-[var(--border-color)] shadow-sm">
+                    <h3 class="text-xl font-medium uppercase mb-3 text-[var(--text-main)]">Janu Basti</h3>
+                    <p class="text-[var(--text-muted)] text-sm font-light leading-relaxed mb-6">Targeted oil bath therapy for the knee joints designed to lubricate cartilage, reduce inflammation, and relieve osteoarthritis stiffness.</p>
+                    <span class="text-xs uppercase tracking-widest text-[var(--accent-color)] font-semibold">45 Mins Session</span>
+                </div>
+                <div class="bg-[var(--bg-card)] p-8 border border-[var(--border-color)] shadow-sm">
+                    <h3 class="text-xl font-medium uppercase mb-3 text-[var(--text-main)]">Greeva Basti</h3>
+                    <p class="text-[var(--text-muted)] text-sm font-light leading-relaxed mb-6">Applied specifically to the cervical region to relax stiff neck muscles, relieve pinched nerves, and treat upper back tension.</p>
+                    <span class="text-xs uppercase tracking-widest text-[var(--accent-color)] font-semibold">45 Mins Session</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TREATMENTS SECTION 4: PREPARATION & AFTERCARE PROTOCOLS -->
+    <section class="py-24 bg-[var(--bg-secondary)] border-b border-[var(--border-color)]">
+        <div class="max-w-[1440px] mx-auto px-6 xl:px-12">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-[var(--accent-color)] text-sm font-medium tracking-[0.2em] mb-3 block uppercase font-heading">
+                    <i class="fas fa-clipboard-list mr-2"></i> Clinical Process
+                </span>
+                <h2 class="text-3xl xl:text-5xl font-medium uppercase mb-4">The Three Stages of Healing</h2>
+                <p class="text-[var(--text-muted)] font-light">How we prepare your body, execute the cleanse, and sustain long-term wellness.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-[var(--bg-card)] p-8 border border-[var(--border-color)] shadow-sm text-center">
+                    <div class="w-16 h-16 rounded-full bg-[var(--bg-secondary)] text-[var(--accent-color)] text-2xl flex items-center justify-center mx-auto mb-6 font-heading font-medium">1</div>
+                    <h3 class="text-xl font-medium uppercase mb-3">Purvakarma (Prep)</h3>
+                    <p class="text-[var(--text-muted)] text-sm font-light leading-relaxed">Internal oleation (drinking medicated ghee) and external sweating therapies to loosen toxins and drive them toward the digestive tract.</p>
+                </div>
+                <div class="bg-[var(--bg-card)] p-8 border border-[var(--border-color)] shadow-sm text-center">
+                    <div class="w-16 h-16 rounded-full bg-[var(--bg-secondary)] text-[var(--accent-color)] text-2xl flex items-center justify-center mx-auto mb-6 font-heading font-medium">2</div>
+                    <h3 class="text-xl font-medium uppercase mb-3">Pradhanakarma (Cleanse)</h3>
+                    <p class="text-[var(--text-muted)] text-sm font-light leading-relaxed">The core Panchakarma procedures administered under strict doctor supervision to systematically evacuate accumulated doshas.</p>
+                </div>
+                <div class="bg-[var(--bg-card)] p-8 border border-[var(--border-color)] shadow-sm text-center">
+                    <div class="w-16 h-16 rounded-full bg-[var(--bg-secondary)] text-[var(--accent-color)] text-2xl flex items-center justify-center mx-auto mb-6 font-heading font-medium">3</div>
+                    <h3 class="text-xl font-medium uppercase mb-3">Paschatkarma (Aftercare)</h3>
+                    <p class="text-[var(--text-muted)] text-sm font-light leading-relaxed">Gradual transition back to normal diet (Samsarjana Krama), rejuvenating herbal tonics, and lifestyle guidance to maintain vitality.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TREATMENTS SECTION 5: HERBAL STEAM & EXPULSION BATHS -->
+    <section class="py-24 bg-[var(--bg-color)]">
+        <div class="max-w-[1440px] mx-auto px-6 xl:px-12">
+            <div class="flex flex-col xl:flex-row gap-16 items-center">
+                <div class="w-full xl:w-1/2">
+                    <span class="text-[var(--accent-color)] text-sm font-medium tracking-[0.2em] mb-3 block uppercase font-heading">
+                        <i class="fas fa-fire-alt mr-2"></i> Thermal Detox
+                    </span>
+                    <h2 class="text-3xl xl:text-4xl font-medium mb-6 uppercase">Bashpa Swedana (Herbal Steam Box)</h2>
+                    <p class="text-[var(--text-muted)] mb-6 leading-relaxed font-light">
+                        Following therapeutic oil massages, patients undergo Bashpa Swedana—a specialized wooden steam box infused with medicinal leaf decoctions like eucalyptus, dashamoola, and nirgundi.
+                    </p>
+                    <p class="text-[var(--text-muted)] mb-8 leading-relaxed font-light">
+                        This induces therapeutic perspiration, opening up skin pores and micro-channels (srotas) to flush out superficial toxins while relaxing muscle stiffness and joint aches.
+                    </p>
+                    <a href="contact.html" class="btn btn-outline">Schedule Your Session</a>
+                </div>
+                <div class="w-full xl:w-1/2 relative">
+                    <img src="img/ayurveda (12).jpg" alt="Herbal Steam Bath" class="w-full h-[450px] object-cover rounded-sm shadow-xl" />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER PART -->
+    <footer>
+        <div class="max-w-[1440px] mx-auto px-6 xl:px-12">
+            <div class="grid grid-cols-1 xl:grid-cols-12 gap-12 mb-10 pt-4">
+
+                <div class="xl:col-span-4">
+                    <div class="mb-8">
+                        <a href="index.html" class="text-3xl font-medium brand-logo tracking-wide block text-white"
+                            style="text-decoration: none;">
+                            <i class="fas fa-leaf"
+                                style="color: var(--accent-color); margin-right: 0.3em; font-size: 0.85em; vertical-align: middle;"></i>AyurVeda
+                        </a>
+                    </div>
+                    <p class="text-slate-400 leading-relaxed text-sm mb-8 max-w-sm font-sans font-light">
+                        Your sacred sanctuary for authentic Ayurvedic healing, traditional Panchakarma detox, herbal therapies, and complete mind-body wellness.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="social-link-circle"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link-circle"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link-circle"><i class="fa-brands fa-x-twitter"></i></a>
+                    </div>
+                </div>
+
+                <div class="xl:col-span-8">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+                        <div>
+                            <h4>Explore</h4>
+                            <ul class="space-y-4">
+                                <li><a href="index.html">Home Page 1</a></li>
+                                <li><a href="home2.html">Home Page 2</a></li>
+                                <li><a href="about.html">Our Philosophy</a></li>
+                                <li><a href="services.html">All Services</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Therapies</h4>
+                            <ul class="space-y-4">
+                                <li><a href="treatments.html">Panchakarma Detox</a></li>
+                                <li><a href="treatments.html">Abhyanga & Shirodhara</a></li>
+                                <li><a href="packages.html">Healing Packages</a></li>
+                                <li><a href="doctors.html">Our Vaidyas</a></li>
+                            </ul>
+                        </div>
+                        <div class="sm:col-span-2 md:col-span-1">
+                            <h4>Center Location</h4>
+                            <ul class="space-y-5 text-slate-400 text-sm">
+                                <li class="flex items-start gap-4"><i class="fas fa-map-marker-alt mt-1 shrink-0"
+                                        style="color: var(--accent-color);"></i><span>45 Ayurveda Marg, Serene Valley<br>Wellness Enclave, Kerala</span></li>
+                                <li class="flex items-center gap-4"><i class="fas fa-phone shrink-0"
+                                        style="color: var(--accent-color);"></i><a href="tel:+18005559353"
+                                        class="break-all hover:text-[var(--accent-color)]">+1 (800) 555-VEDA</a></li>
+                                <li class="flex items-center gap-4"><i class="fas fa-envelope shrink-0"
+                                        style="color: var(--accent-color);"></i><a href="contact.html"
+                                        class="break-all hover:text-[var(--accent-color)]">info@ayurvedapanchakarma.com</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                class="footer-bottom flex flex-col md:flex-row justify-between items-center text-xs gap-6 uppercase tracking-[1px] font-heading font-normal text-slate-500">
+                <p>&copy; 2026 AyurVeda Panchakarma Center. All rights reserved.</p>
+                <div class="flex flex-wrap justify-center gap-6 sm:gap-8">
+                    <a href="treatments.html">Treatments</a>
+                    <a href="packages.html">Packages</a>
+                    <a href="contact.html">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVITY SCRIPT -->
+    <script>
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('main-nav');
+            if (window.scrollY > 20) { nav.classList.add('scrolled'); }
+            else { nav.classList.remove('scrolled'); }
+        });
+
+        const mobileBtn = document.getElementById('mobile-btn');
+        const fullscreenMenu = document.getElementById('fullscreen-menu');
+        const closeMenu = document.getElementById('close-menu');
+        const drawerOverlay = document.getElementById('drawer-overlay');
+
+        function toggleMenu() {
+            fullscreenMenu.classList.toggle('active');
+            drawerOverlay.classList.toggle('active');
+            document.body.style.overflow = fullscreenMenu.classList.contains('active') ? 'hidden' : 'auto';
+        }
+        mobileBtn.onclick = toggleMenu; closeMenu.onclick = toggleMenu; drawerOverlay.onclick = toggleMenu;
+
+        const themeDesktop = document.getElementById('theme-toggle-desktop');
+        const themeMobile = document.getElementById('theme-toggle-mobile');
+        const theme = localStorage.getItem('theme') || 'light';
+
+        function updateThemeUI(isDark) {
+            if (isDark) {
+                document.body.classList.add('dark-mode');
+                if (themeMobile) themeMobile.classList.add('active');
+            } else {
+                document.body.classList.remove('dark-mode');
+                if (themeMobile) themeMobile.classList.remove('active');
+            }
+        }
+        updateThemeUI(theme === 'dark');
+
+        function toggleTheme() {
+            const isDark = !document.body.classList.contains('dark-mode');
+            updateThemeUI(isDark);
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+        themeDesktop.onclick = toggleTheme;
+        if (themeMobile) themeMobile.onclick = toggleTheme;
+
+        const rtlBtn = document.getElementById('rtl-btn');
+        const rtlMobile = document.getElementById('rtl-toggle-mobile');
+        const dir = localStorage.getItem('dir') || 'ltr';
+
+        function updateRTLUI(currentDir) {
+            const isRTL = currentDir === 'rtl';
+            if (rtlBtn) rtlBtn.innerText = isRTL ? 'RTL' : 'LTR';
+            if (rtlMobile) rtlMobile.innerText = isRTL ? 'RTL' : 'LTR';
+        }
+        if (dir === 'rtl') { document.documentElement.dir = 'rtl'; }
+        updateRTLUI(dir);
+
+        function toggleRTL() {
+            const isRTL = document.documentElement.dir === 'rtl';
+            const newDir = isRTL ? 'ltr' : 'rtl';
+            document.documentElement.dir = newDir;
+            localStorage.setItem('dir', newDir);
+            updateRTLUI(newDir);
+        }
+        if (rtlBtn) rtlBtn.onclick = toggleRTL;
+        if (rtlMobile) rtlMobile.onclick = toggleRTL;
+    </script>
+</body>
+
+</html>

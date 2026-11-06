@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AyurVeda Panchakarma - Patient Portal Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/jpeg" href="img/ayurveda (2).jpg">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontWeight: {
+                        semibold: '500',
+                        bold: '600',
+                        extrabold: '800',
+                        black: '900'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* === RESET & CORE === */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* === THEME VARIABLES (Ayurvedic Emerald Palette) === */
+        :root {
+            --bg-color: #F4FBF7;
+            --bg-secondary: #E8F7EE;
+            --bg-card: #FFFFFF;
+            --text-main: #062414;
+            --text-muted: #4A6B5D;
+            --accent-color: #059669; 
+            --accent-dark: #047857;
+            --border-color: #D1E7DF;
+            --sidebar-bg: #FFFFFF;
+        }
+
+        body.dark-mode {
+            --bg-color: #062414;
+            --bg-secondary: #0D3B22;
+            --bg-card: #0A2E1A;
+            --text-main: #ECFDF5;
+            --text-muted: #9CA3AF;
+            --accent-color: #34D399;
+            --accent-dark: #10B981;
+            --border-color: #134E31;
+            --sidebar-bg: #0A2E1A;
+        }
+
+        [dir="rtl"] { text-align: right; }
+        [dir="rtl"] .ml-auto { margin-right: auto; margin-left: 0; }
+        [dir="rtl"] .mr-auto { margin-left: auto; margin-right: 0; }
+
+        /* === BUTTONS DESIGN SYSTEM === */
+        .icon-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 9999px;
+            background: var(--bg-secondary);
+            color: var(--text-main);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            font-weight: 800;
+            flex-shrink: 0;
+            text-decoration: none;
+        }
+        .icon-btn:hover {
+            background: var(--accent-color);
+            color: #fff !important;
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
+        }
+
+        .btn {
+            padding: 12px 28px;
+            min-height: 44px;
+            box-sizing: border-box;
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            border-radius: 9999px;
+            border: 1.5px solid transparent;
+            text-decoration: none;
+            line-height: 1.25;
+            white-space: nowrap;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-solid {
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-dark));
+            color: #FFFFFF !important;
+            border-color: transparent;
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+        }
+        .btn-solid:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(5, 150, 105, 0.42);
+            filter: brightness(1.05);
+            color: #FFFFFF !important;
+        }
+
+        .btn-outline {
+            background: var(--bg-card);
+            color: var(--text-main) !important;
+            border-color: var(--border-color);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+        }
+        body.dark-mode .btn-outline {
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+        }
+        .btn-outline:hover {
+            background: var(--accent-color) !important;
+            color: #FFFFFF !important;
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(5, 150, 105, 0.28);
+        }
+
+        /* DASHBOARD LAYOUT */
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 50;
+            flex-shrink: 0;
+        }
+        [dir="rtl"] .sidebar {
+            border-right: none;
+            border-left: 1px solid var(--border-color);
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background-color: var(--bg-color);
+            min-width: 0;
+        }
+        .topbar {
+            height: 70px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            background-color: var(--sidebar-bg);
+            flex-shrink: 0;
+        }
+        @media (min-width: 768px) {
+            .topbar { padding: 0 24px; }
+        }
+
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 16px;
+            width: 100%;
+        }
+        @media (min-width: 768px) {
+            .content-area { padding: 24px; }
+        }
+        @media (min-width: 1024px) {
+            .content-area { padding: 32px; }
+        }
+
+        /* MOBILE & TABLET DRAWER */
+        .sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(2px);
+            z-index: 40;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        @media (max-width: 1023px) {
+            .sidebar {
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                height: 100vh;
+                transform: translateX(-100%);
+                box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
+            }
+            [dir="rtl"] .sidebar {
+                left: auto;
+                right: 0;
+                transform: translateX(100%);
+                box-shadow: -4px 0 24px rgba(0, 0, 0, 0.15);
+            }
+            .sidebar.open {
+                transform: translateX(0) !important;
+            }
+        }
+
+        /* SIDEBAR LINKS */
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 24px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        [dir="rtl"] .sidebar-link {
+            border-left: none;
+            border-right: 3px solid transparent;
+        }
+        .sidebar-link:hover {
+            background-color: var(--bg-secondary);
+            color: var(--accent-color);
+        }
+        .sidebar-link.active {
+            color: var(--accent-color);
+            background-color: var(--bg-secondary);
+            border-left-color: var(--accent-color);
+        }
+        [dir="rtl"] .sidebar-link.active {
+            border-right-color: var(--accent-color);
+        }
+
+        /* CARDS */
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            min-width: 0;
+            overflow: hidden;
+        }
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .stat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        /* TABLES */
+        table { width: 100%; border-collapse: collapse; min-width: 580px; }
+        th, td { padding: 14px 16px; text-align: left; border-bottom: 1px solid var(--border-color); }
+        [dir="rtl"] th, [dir="rtl"] td { text-align: right; }
+        th { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+        td { font-size: 13px; color: var(--text-main); font-weight: 500; }
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: inline-block;
+        }
+        .status-active { background: rgba(5, 150, 105, 0.1); color: #059669; }
+        .status-pending { background: rgba(245, 158, 11, 0.1); color: #F59E0B; }
+        .status-error { background: rgba(239, 68, 68, 0.1); color: #EF4444; }
+        
+        /* TABS */
+        .tab-pane { display: none; animation: fadeIn 0.3s ease; width: 100%; }
+        .tab-pane.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+
+<body>
+
+    <!-- MOBILE BACKDROP OVERLAY -->
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+    <!-- SIDEBAR -->
+    <aside id="sidebar" class="sidebar">
+        <!-- LOGO HEADER (Matching index.html Logo Style & Size Rules) -->
+        <div class="h-[70px] flex items-center justify-between px-6 border-b border-[var(--border-color)] shrink-0">
+            <a href="index.html" class="text-2xl xl:text-3xl font-medium brand-logo tracking-wide block"
+                style="color: var(--text-main) !important; text-decoration: none;">
+                <i class="fas fa-leaf"
+                    style="color: var(--accent-color); margin-right: 0.3em; font-size: 0.85em; vertical-align: middle;"></i>AYURVEDA
+            </a>
+            <!-- CLOSE BUTTON ON MOBILE/TABLET -->
+            <button id="sidebar-close-btn" class="icon-btn lg:hidden ml-auto" aria-label="Close sidebar">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="flex-1 py-6 space-y-1 overflow-y-auto">
+            <a href="#" class="sidebar-link active" data-tab="tab-dashboard"><i class="fas fa-home w-5 text-center"></i> My Health Dashboard</a>
+            <a href="#" class="sidebar-link" data-tab="tab-appointments"><i class="fas fa-calendar-alt w-5 text-center"></i> My Appointments</a>
+            <a href="#" class="sidebar-link" data-tab="tab-plan"><i class="fas fa-spa w-5 text-center"></i> My Panchakarma Plan</a>
+            <a href="#" class="sidebar-link" data-tab="tab-prescriptions"><i class="fas fa-prescription-bottle-alt w-5 text-center"></i> Herbal Prescriptions</a>
+            <a href="#" class="sidebar-link" data-tab="tab-profile"><i class="fas fa-user-circle w-5 text-center"></i> Patient Profile</a>
+        </div>
+
+        <div class="p-6 border-t border-[var(--border-color)]">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full border border-[var(--border-color)] bg-[var(--accent-color)] flex items-center justify-center text-white font-bold shrink-0">
+                    SJ
+                </div>
+                <div class="min-w-0">
+                    <h4 class="font-bold text-sm text-[var(--text-main)] truncate">Sarah Jenkins</h4>
+                    <p class="text-xs text-[var(--text-muted)] truncate">Patient ID: #AY-9482</p>
+                </div>
+            </div>
+            <a href="contact.html" class="btn btn-outline w-full !py-2.5 !text-xs !normal-case hover:!bg-red-50 hover:!text-red-600 hover:!border-red-300 dark:hover:!bg-red-950/30 dark:hover:!text-red-400 mt-4">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <!-- TOPBAR -->
+        <header class="topbar">
+            <div class="flex items-center gap-3 min-w-0">
+                <!-- HAMBURGER BUTTON (VISIBLE ONLY ON MOBILE & TABLET) -->
+                <button id="hamburger-btn" class="icon-btn lg:hidden" aria-label="Open sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h2 class="text-base sm:text-xl font-bold text-[var(--text-main)] truncate">Patient Portal Dashboard</h2>
+            </div>
+            <div class="flex items-center gap-2 sm:gap-4 shrink-0">
+                <button id="theme-toggle-desktop" class="icon-btn" title="Toggle Dark Mode">
+                    <i class="fas fa-moon" id="theme-icon-desktop"></i>
+                </button>
+                <button id="rtl-btn" class="icon-btn" title="Toggle LTR/RTL">
+                    LTR
+                </button>
+            </div>
+        </header>
+
+        <!-- CONTENT AREA -->
+        <div class="content-area">
+            <div id="tab-dashboard" class="tab-pane active">
+                <!-- STATS GRID -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8 w-full">
+                    <div class="stat-card min-w-0">
+                        <div class="stat-icon bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30">
+                            <i class="fas fa-calendar-day"></i>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <p class="text-[var(--text-muted)] text-[11px] sm:text-xs font-bold uppercase tracking-wider mb-1 truncate">Next Appointment</p>
+                            <h3 class="text-xl sm:text-2xl font-black text-[var(--text-main)] truncate">Nov 06</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card min-w-0">
+                        <div class="stat-icon bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30">
+                            <i class="fas fa-spa"></i>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <p class="text-[var(--text-muted)] text-[11px] sm:text-xs font-bold uppercase tracking-wider mb-1 truncate">Active Program</p>
+                            <h3 class="text-xl sm:text-2xl font-black text-[var(--text-main)] truncate">14-Day Reset</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card min-w-0">
+                        <div class="stat-icon bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <p class="text-[var(--text-muted)] text-[11px] sm:text-xs font-bold uppercase tracking-wider mb-1 truncate">Assigned Vaidya</p>
+                            <h3 class="text-xl sm:text-2xl font-black text-[var(--text-main)] truncate">Dr. Sharma</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card min-w-0">
+                        <div class="stat-icon bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <p class="text-[var(--text-muted)] text-[11px] sm:text-xs font-bold uppercase tracking-wider mb-1 truncate">Dosha Balance</p>
+                            <h3 class="text-xl sm:text-2xl font-black text-[var(--text-main)] truncate">Vata-Pitta</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NOTIFICATIONS & QUICK ACTIONS -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 w-full">
+                    <!-- CONTENT SECTION -->
+                    <div class="lg:col-span-2 bg-[var(--bg-card)] rounded-[20px] p-5 md:p-6 border border-[var(--border-color)] min-w-0">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="font-bold text-[var(--text-main)] text-base md:text-lg">Upcoming Therapy Schedule</h3>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="p-4 md:p-5 border border-emerald-200 dark:border-emerald-900/50 rounded-xl bg-emerald-50 dark:bg-emerald-900/10 flex items-start gap-4">
+                                <i class="fas fa-water text-[var(--accent-color)] text-xl mt-1 shrink-0"></i>
+                                <div class="min-w-0 flex-1">
+                                    <h4 class="font-bold text-emerald-700 dark:text-emerald-400 text-sm md:text-base">Shirodhara Therapy Session</h4>
+                                    <p class="text-xs md:text-sm text-emerald-600 dark:text-emerald-300 mt-1">Scheduled for November 6, 2026 at 10:00 AM with Senior Therapist Ramesh.</p>
+                                    <button class="btn btn-outline !py-1.5 !px-3.5 !text-xs !normal-case !bg-emerald-100 dark:!bg-emerald-900/40 !text-emerald-700 dark:!text-emerald-300 !border-emerald-200 dark:!border-emerald-800 hover:!bg-emerald-200 hover:!text-emerald-800 hover:!border-emerald-300 mt-3">View Preparation Guide</button>
+                                </div>
+                            </div>
+                            <div class="p-4 md:p-5 border border-[var(--border-color)] rounded-xl bg-[var(--bg-secondary)] flex items-start gap-4">
+                                <i class="fas fa-utensils text-[var(--text-muted)] text-xl mt-1 shrink-0"></i>
+                                <div class="min-w-0 flex-1">
+                                    <h4 class="font-bold text-[var(--text-main)] text-sm md:text-base">Customized Diet Guideline (Ahara)</h4>
+                                    <p class="text-xs md:text-sm text-[var(--text-muted)] mt-1">Dr. Anand Sharma has updated your dietary chart to favor warm, spiced broths and steamed grains.</p>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 mt-4">
+                                <a href="contact.html" class="btn btn-solid w-full !py-3 !text-xs md:!text-sm flex items-center justify-center gap-2 !normal-case text-center">
+                                    <i class="fas fa-calendar-plus"></i> Request Slot Change
+                                </a>
+                                <a href="treatments.html" class="btn btn-outline w-full !py-3 !text-xs md:!text-sm flex items-center justify-center gap-2 !normal-case text-center">
+                                    <i class="fas fa-book-medical"></i> Explore Therapies
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- HEALTH METRICS -->
+                    <div class="bg-[var(--bg-card)] rounded-[20px] p-5 md:p-6 border border-[var(--border-color)] min-w-0">
+                        <h3 class="font-bold text-[var(--text-main)] text-base md:text-lg mb-6">Daily Wellness Checklist</h3>
+                        <div class="space-y-4">
+                            <label class="flex items-center gap-3 p-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] cursor-pointer">
+                                <input type="checkbox" checked class="w-4 h-4 text-[var(--accent-color)] rounded">
+                                <span class="text-xs md:text-sm font-medium text-[var(--text-main)]">Morning Herbal Tea (Kashayam)</span>
+                            </label>
+                            <label class="flex items-center gap-3 p-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] cursor-pointer">
+                                <input type="checkbox" checked class="w-4 h-4 text-[var(--accent-color)] rounded">
+                                <span class="text-xs md:text-sm font-medium text-[var(--text-main)]">Medicated Ghee Intake (Snehadpana)</span>
+                            </label>
+                            <label class="flex items-center gap-3 p-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] cursor-pointer">
+                                <input type="checkbox" class="w-4 h-4 text-[var(--accent-color)] rounded">
+                                <span class="text-xs md:text-sm font-medium text-[var(--text-main)]">Evening Pranayama & Meditation</span>
+                            </label>
+                            <label class="flex items-center gap-3 p-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] cursor-pointer">
+                                <input type="checkbox" class="w-4 h-4 text-[var(--accent-color)] rounded">
+                                <span class="text-xs md:text-sm font-medium text-[var(--text-main)]">Early Dinner Before 7:30 PM</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RECENT PRESCRIPTIONS TABLE -->
+                <div class="mt-6 md:mt-8 bg-[var(--bg-card)] rounded-[20px] p-5 md:p-6 border border-[var(--border-color)] w-full">
+                    <div class="flex justify-between items-center mb-4 md:mb-6">
+                        <h3 class="font-bold text-[var(--text-main)] text-base md:text-lg">Your Herbal Prescriptions</h3>
+                        <button class="text-[var(--accent-color)] text-xs md:text-sm font-semibold hover:underline">Download PDF</button>
+                    </div>
+                    <div class="overflow-x-auto -mx-5 px-5 md:mx-0 md:px-0">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Medicine / Formulation</th>
+                                    <th>Dosage</th>
+                                    <th>Timing</th>
+                                    <th>Duration</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-semibold">Mahanarayan Tailam</td>
+                                    <td>15ml Application</td>
+                                    <td>External massage before bath</td>
+                                    <td>14 Days</td>
+                                    <td><span class="status-badge status-active">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="font-semibold">Dashamoolarishtam</td>
+                                    <td>30ml with warm water</td>
+                                    <td>Post meals (Lunch & Dinner)</td>
+                                    <td>21 Days</td>
+                                    <td><span class="status-badge status-active">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="font-semibold">Triphala Churna</td>
+                                    <td>1 Teaspoon</td>
+                                    <td>Bedtime with warm water</td>
+                                    <td>30 Days</td>
+                                    <td><span class="status-badge status-active">Active</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OTHER TABS CONTENT -->
+            <div id="tab-appointments" class="tab-pane">
+                <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6">
+                    <h3 class="font-bold text-[var(--text-main)] text-xl md:text-2xl">My Appointments</h3>
+                    <a href="contact.html" class="btn btn-solid !py-2.5 !px-5 !text-xs self-start sm:self-auto">Book New Appointment</a>
+                </div>
+                <div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-2xl overflow-hidden p-6">
+                    <div class="space-y-4">
+                        <div class="p-4 border border-[var(--border-color)] rounded-xl flex justify-between items-center">
+                            <div>
+                                <h4 class="font-bold text-[var(--text-main)]">Shirodhara Therapy Session</h4>
+                                <p class="text-xs text-[var(--text-muted)] mt-1">Nov 06, 2026 • 10:00 AM with Senior Therapist Ramesh</p>
+                            </div>
+                            <span class="status-badge status-active">Confirmed</span>
+                        </div>
+                        <div class="p-4 border border-[var(--border-color)] rounded-xl flex justify-between items-center">
+                            <div>
+                                <h4 class="font-bold text-[var(--text-main)]">Follow-up Consultation</h4>
+                                <p class="text-xs text-[var(--text-muted)] mt-1">Nov 12, 2026 • 11:30 AM with Dr. Anand Sharma</p>
+                            </div>
+                            <span class="status-badge status-pending">Scheduled</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-plan" class="tab-pane">
+                <h3 class="font-bold text-[var(--text-main)] text-xl md:text-2xl mb-6">My Panchakarma Plan</h3>
+                <div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-2xl p-6 md:p-8 space-y-6">
+                    <div>
+                        <span class="text-xs uppercase tracking-widest bg-[var(--bg-secondary)] text-[var(--accent-color)] px-3 py-1 rounded font-semibold">Program: 14-Day Complete Rejuvenation</span>
+                        <h4 class="text-xl font-bold text-[var(--text-main)] mt-3 mb-2">Primary Objective: Deep Cellular Cleansing & Vata-Pitta Pacification</h4>
+                        <p class="text-sm text-[var(--text-muted)] font-light leading-relaxed">Your personalized protocol includes 3 days of internal oleation, followed by Virechana purgation therapy, daily Abhyanga, and restorative Shirodhara sessions.</p>
+                    </div>
+                    <div class="border-t border-[var(--border-color)] pt-6">
+                        <h5 class="font-bold text-sm uppercase text-[var(--text-main)] mb-3">Milestones</h5>
+                        <ul class="space-y-3 text-sm text-[var(--text-muted)]">
+                            <li class="flex items-center gap-3"><i class="fas fa-check-circle text-emerald-500"></i> Initial Nadi Pariksha & Dosha Assessment (Completed)</li>
+                            <li class="flex items-center gap-3"><i class="fas fa-check-circle text-emerald-500"></i> Internal Oleation & Snehadpana (Completed)</li>
+                            <li class="flex items-center gap-3"><i class="far fa-circle text-[var(--accent-color)]"></i> Virechana Therapy & Cleansing (In Progress)</li>
+                            <li class="flex items-center gap-3"><i class="far fa-circle text-[var(--text-muted)]"></i> Rasayana Rejuvenation & Dietary Transition (Upcoming)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-prescriptions" class="tab-pane">
+                <h3 class="font-bold text-[var(--text-main)] text-xl md:text-2xl mb-6">Herbal Prescriptions & Pharmacy Notes</h3>
+                <div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-2xl p-6">
+                    <p class="text-sm text-[var(--text-muted)] mb-4">All herbal medicines are freshly prepared in our certified in-house pharmacy under the supervision of Dr. Anand Sharma.</p>
+                    <div class="space-y-4">
+                        <div class="p-4 border border-[var(--border-color)] rounded-xl">
+                            <div class="flex justify-between items-center mb-2">
+                                <h4 class="font-bold text-[var(--text-main)]">Mahanarayan Tailam</h4>
+                                <span class="text-xs text-[var(--accent-color)] font-semibold">External Use</span>
+                            </div>
+                            <p class="text-xs text-[var(--text-muted)]">Apply warm oil gently over joints and spine 30 minutes prior to your morning bath.</p>
+                        </div>
+                        <div class="p-4 border border-[var(--border-color)] rounded-xl">
+                            <div class="flex justify-between items-center mb-2">
+                                <h4 class="font-bold text-[var(--text-main)]">Dashamoolarishtam</h4>
+                                <span class="text-xs text-[var(--accent-color)] font-semibold">Internal Tonic</span>
+                            </div>
+                            <p class="text-xs text-[var(--text-muted)]">Mix 30ml with an equal amount of lukewarm water immediately after lunch and dinner.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-profile" class="tab-pane">
+                <h3 class="font-bold text-[var(--text-main)] text-xl md:text-2xl mb-6">Patient Profile</h3>
+                <div class="max-w-2xl bg-[var(--bg-card)] border border-[var(--border-color)] rounded-2xl p-5 md:p-8">
+                    <form class="space-y-5 md:space-y-6">
+                        <div>
+                            <label class="block text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider mb-2">Full Name</label>
+                            <input type="text" value="Sarah Jenkins" class="w-full p-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-color)] text-[var(--text-main)] text-sm focus:outline-none focus:border-[var(--accent-color)] transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider mb-2">Email Address</label>
+                            <input type="email" value="sarah.j@example.com" class="w-full p-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-color)] text-[var(--text-main)] text-sm focus:outline-none focus:border-[var(--accent-color)] transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider mb-2">Phone Number</label>
+                            <input type="tel" value="+1 (555) 382-9401" class="w-full p-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-color)] text-[var(--text-main)] text-sm focus:outline-none focus:border-[var(--accent-color)] transition-colors">
+                        </div>
+                        <div class="pt-2">
+                            <button type="button" class="btn btn-solid w-full sm:w-auto !py-3 !px-8 !text-xs">Update Profile</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // Sidebar Mobile Drawer Controls
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const sidebarCloseBtn = document.getElementById('sidebar-close-btn');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+        const sidebar = document.getElementById('sidebar');
+
+        function openSidebar() {
+            sidebar.classList.add('open');
+            sidebarOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+            sidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        if (hamburgerBtn) hamburgerBtn.addEventListener('click', openSidebar);
+        if (sidebarCloseBtn) sidebarCloseBtn.addEventListener('click', closeSidebar);
+        if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
+
+        // Theme logic
+        const themeDesktop = document.getElementById('theme-toggle-desktop');
+        const iconDesktop = document.getElementById('theme-icon-desktop');
+        const theme = localStorage.getItem('theme') || 'light';
+
+        function updateThemeUI(isDark) {
+            if (isDark) {
+                document.body.classList.add('dark-mode');
+                if (iconDesktop) iconDesktop.className = 'fas fa-sun';
+            } else {
+                document.body.classList.remove('dark-mode');
+                if (iconDesktop) iconDesktop.className = 'fas fa-moon';
+            }
+        }
+
+        updateThemeUI(theme === 'dark');
+
+        function toggleTheme() {
+            const isDark = !document.body.classList.contains('dark-mode');
+            updateThemeUI(isDark);
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        if (themeDesktop) themeDesktop.onclick = toggleTheme;
+
+        // RTL/LTR logic
+        const rtlBtn = document.getElementById('rtl-btn');
+        const dir = localStorage.getItem('dir') || 'ltr';
+
+        function updateRTLUI(currentDir) {
+            const isRTL = currentDir === 'rtl';
+            if (rtlBtn) rtlBtn.innerText = isRTL ? 'RTL' : 'LTR';
+        }
+
+        if (dir === 'rtl') { document.documentElement.dir = 'rtl'; }
+        updateRTLUI(dir);
+
+        function toggleRTL() {
+            const isRTL = document.documentElement.dir === 'rtl';
+            const newDir = isRTL ? 'ltr' : 'rtl';
+            document.documentElement.dir = newDir;
+            localStorage.setItem('dir', newDir);
+            updateRTLUI(newDir);
+        }
+
+        if (rtlBtn) rtlBtn.onclick = toggleRTL;
+
+        // Tab logic & auto-closing drawer on mobile
+        const sidebarLinks = document.querySelectorAll('.sidebar-link');
+        const tabPanes = document.querySelectorAll('.tab-pane');
+
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                if(link.getAttribute('href') !== '#') return;
+                e.preventDefault();
+                const targetId = link.getAttribute('data-tab');
+                if(!targetId) return;
+
+                sidebarLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+
+                tabPanes.forEach(pane => pane.classList.remove('active'));
+                const targetPane = document.getElementById(targetId);
+                if(targetPane) targetPane.classList.add('active');
+
+                if (window.innerWidth < 1024) {
+                    closeSidebar();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
